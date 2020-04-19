@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo 'Loading NVM...'
+. ~/.nvm/nvm.sh
+
+echo 'Setting node version...'
+nvm use 10
+
+echo 'Starting server...'
+json-server --watch db.json 
