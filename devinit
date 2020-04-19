@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo 'Loading NVM...'
+. ~/.nvm/nvm.sh
+
+echo 'Setting node version...'
+nvm install 10
+
+echo 'Installing server...'
+npm install -g json-server
