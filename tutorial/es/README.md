@@ -20,11 +20,11 @@ curl http://localhost:3000/prendas/2
 ¿Y si no hay nada?
 
 ```bash
-curl http://localhost:3000/prendas/500
+curl http://localhost:3000/prendas/400
 ```
 
 ```bash
-curl http://localhost:3000/prendas/500 -i ## TODO si se pide un recurso inexistente, que devuelva  ''
+curl http://localhost:3000/prendas/600
 ```
 
 ```bash
@@ -42,7 +42,7 @@ curl http://localhost:3000/prindas/1 -i
 ```
 
 ```bash
-curl http://localhost:3000/prindas/nueva-funcionalidad-que-a-veces-no-anda-bien -i ## TODO que rompa
+curl http://localhost:3000/nueva-funcionalidad-que-a-veces-no-anda-bien -i
 ```
 
 > ✍️ Autoevaluación: ¿qué es un status code y para qué me sirve?
