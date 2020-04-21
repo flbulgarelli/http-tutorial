@@ -9,6 +9,7 @@ module.exports = (req, res, next) => {
     res.removeHeader('Access-Control-Allow-Credentials');
     res.removeHeader('Cache-Control');
     res.removeHeader('ETag');
+    res.removeHeader('X-Content-Type-Options');
 
     res.end(chunk, encoding);
   }
