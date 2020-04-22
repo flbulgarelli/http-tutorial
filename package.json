@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/flbulgarelli/http-tutorial/issues"
   },
-  "homepage": "https://github.com/flbulgarelli/http-tutorial#readme"
+  "homepage": "https://github.com/flbulgarelli/http-tutorial#readme",
+  "dependencies": {
+    "json-server": "^0.16.1"
+  }
 }
