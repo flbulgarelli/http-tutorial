@@ -5,7 +5,7 @@
 ## 1. Primeros pedidos
 
 ```bash
-$ curl 'http://localhost:3000/prendas/1'
+$ curl 'https://macowins-server.herokuapp.com/prendas/1'
 {
   "id": 1,
   "tipo": "pantalon",
@@ -14,7 +14,7 @@ $ curl 'http://localhost:3000/prendas/1'
 ```
 
 ```bash
-$ curl 'http://localhost:3000/prendas/20'
+$ curl 'https://macowins-server.herokuapp.com/prendas/20'
 {
   "id": 20,
   "tipo": "saco",
@@ -31,11 +31,11 @@ $ curl 'http://localhost:3000/prendas/20'
 ¿Y si no hay nada?
 
 ```bash
-$ curl 'http://localhost:3000/prendas/400'
+$ curl 'https://macowins-server.herokuapp.com/prendas/400'
 ```
 
 ```bash
-$ curl 'http://localhost:3000/prendas/1' -i
+$ curl 'https://macowins-server.herokuapp.com/prendas/1' -i
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Expires: -1
@@ -56,7 +56,7 @@ Connection: keep-alive
 
 
 ```bash
-$ curl 'http://localhost:3000/prendas/400' -i
+$ curl 'https://macowins-server.herokuapp.com/prendas/400' -i
 HTTP/1.1 404 Not Found
 X-Powered-By: Express
 Expires: -1
@@ -68,11 +68,11 @@ Connection: keep-alive
 ```
 
 > ✍️ Para pensar: ¿Qué cambió? ¿Qué cambio o cambios te parecen relevates?
-> 💡 Tip: Probá hacer `curl 'http://localhost:3000/prendas/400' -is | head -n1`
+> 💡 Tip: Probá hacer `curl 'https://macowins-server.herokuapp.com/prendas/400' -is | head -n1`
 
 
 ```bash
-$ curl 'http://localhost:3000/prindas/1' -i
+$ curl 'https://macowins-server.herokuapp.com/prindas/1' -i
 HTTP/1.1 404 Not Found
 ....
 ```
@@ -84,7 +84,7 @@ HTTP/1.1 404 Not Found
 Veamos otro código de respuesta más:
 
 ```bash
-$ curl 'http://localhost:3000/nueva-funcionalidad-que-a-veces-no-anda-bien' -i
+$ curl 'https://macowins-server.herokuapp.com/nueva-funcionalidad-que-a-veces-no-anda-bien' -i
 HTTP/1.1 500 Internal Server Error
 X-Powered-By: Express
 Vary: Origin, Accept-Encoding
@@ -119,7 +119,7 @@ Connection: keep-alive
 ## 3. Parámetros
 
 ```bash
-$ curl 'http://localhost:3000/prendas'
+$ curl 'https://macowins-server.herokuapp.com/prendas'
 [
   {
     "id": 1,
@@ -164,10 +164,10 @@ $ curl 'http://localhost:3000/prendas'
 
 > 🤔 Para pensar: ¿qué hará `/ventas/2`? ¿`/ventas/`?.
 
-> 🏅 Desafío: hacé `curl 'http://localhost:3000/ventas'` y `curl 'http://localhost:3000/ventas/2'` y contrastá el resultado con tu respuesta anterior
+> 🏅 Desafío: hacé `curl 'https://macowins-server.herokuapp.com/ventas'` y `curl 'https://macowins-server.herokuapp.com/ventas/2'` y contrastá el resultado con tu respuesta anterior
 
 ```bash
-$ curl 'http://localhost:3000/prendas?tipo=pantalon'
+$ curl 'https://macowins-server.herokuapp.com/prendas?tipo=pantalon'
 [
   {
     "id": 1,
@@ -189,7 +189,7 @@ $ curl 'http://localhost:3000/prendas?tipo=pantalon'
 ```
 
 ```bash
-$ curl 'http://localhost:3000/prendas?tipo=saco'
+$ curl 'https://macowins-server.herokuapp.com/prendas?tipo=saco'
 [
   {
     "id": 16,
@@ -224,7 +224,7 @@ $ curl 'http://localhost:3000/prendas?tipo=saco'
 Es común que las URL que admiten parámetros soporten más de uno, por ejemplo:
 
 ```bash
-$ curl 'http://localhost:3000/prendas?talle=40'
+$ curl 'https://macowins-server.herokuapp.com/prendas?talle=40'
 [
   {
     "id": 6,
@@ -237,7 +237,7 @@ $ curl 'http://localhost:3000/prendas?talle=40'
 Además, los parámetros además se pueden combinar, utilizando el signo `&` (se llama _et_, aunque en informática es más común escucharlo por su nombre en inglés _ampersand_)
 
 ```bash
-$ curl 'http://localhost:3000/prendas?talle=40&tipo=pantalon'
+$ curl 'https://macowins-server.herokuapp.com/prendas?talle=40&tipo=pantalon'
 [
   {
     "id": 6,
@@ -252,14 +252,14 @@ $ curl 'http://localhost:3000/prendas?talle=40&tipo=pantalon'
 
 ## 4. Paginación
 
-Volvamos a `curl 'http://localhost:3000/prendas'`. ¿Qué pasaría si este listado fuera muy grande? ## TODO simular que creamos muchos productos. O usar ventas
+Volvamos a `curl 'https://macowins-server.herokuapp.com/prendas'`. ¿Qué pasaría si este listado fuera muy grande? ## TODO simular que creamos muchos productos. O usar ventas
 
 > 🤔 Para pensar: ¿Qué problemas tiene esto?
 
 Ejecutemos nuevamente...
 
 ```bash
-$ curl 'http://localhost:3000/prendas' -i
+$ curl 'https://macowins-server.herokuapp.com/prendas' -i
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Expires: -1
@@ -289,12 +289,12 @@ Connection: keep-alive
 Content-Length: 794
 ```
 
-> 💡 Tip:  Probá hacer `curl 'http://localhost:3000/prendas' -is | grep 'Content-Length'`
+> 💡 Tip:  Probá hacer `curl 'https://macowins-server.herokuapp.com/prendas' -is | grep 'Content-Length'`
 
 y comparemos el resultado con el de:
 
 ```bash
-$ curl 'http://localhost:3000/ventas' -i
+$ curl 'https://macowins-server.herokuapp.com/ventas' -i
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Expires: -1
@@ -327,13 +327,13 @@ Ya sea porque la respuesta es demasiado "pesada", o porque simplemente sólo que
 si fueran las páginas de un libro: de una a la vez. Macowins por eso nos permite utilizar un parámetro llamado `_page`, con el que podemos decirle qué número de página queremos.
 
 ```bash
-$ curl 'http://localhost:3000/ventas/?_page=1' -i
+$ curl 'https://macowins-server.herokuapp.com/ventas/?_page=1' -i
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Expires: -1
 X-Total-Count: 500
 Access-Control-Expose-Headers: X-Total-Count, Link
-Link: <http://localhost:3000/ventas/?_page=1>; rel="first", <http://localhost:3000/ventas/?_page=2>; rel="next", <http://localhost:3000/ventas/?_page=50>; rel="last"
+Link: <https://macowins-server.herokuapp.com/ventas/?_page=1>; rel="first", <https://macowins-server.herokuapp.com/ventas/?_page=2>; rel="next", <https://macowins-server.herokuapp.com/ventas/?_page=50>; rel="last"
 Content-Type: application/json; charset=utf-8
 Content-Length: 1456
 Vary: Accept-Encoding
@@ -382,13 +382,13 @@ Connection: keep-alive
 ```
 
 ```bash
-$ curl 'http://localhost:3000/ventas/?_page=2' -i
+$ curl 'https://macowins-server.herokuapp.com/ventas/?_page=2' -i
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Expires: -1
 X-Total-Count: 500
 Access-Control-Expose-Headers: X-Total-Count, Link
-Link: <http://localhost:3000/ventas/?_page=1>; rel="first", <http://localhost:3000/ventas/?_page=1>; rel="prev", <http://localhost:3000/ventas/?_page=3>; rel="next", <http://localhost:3000/ventas/?_page=50>; rel="last"
+Link: <https://macowins-server.herokuapp.com/ventas/?_page=1>; rel="first", <https://macowins-server.herokuapp.com/ventas/?_page=1>; rel="prev", <https://macowins-server.herokuapp.com/ventas/?_page=3>; rel="next", <https://macowins-server.herokuapp.com/ventas/?_page=50>; rel="last"
 Content-Type: application/json; charset=utf-8
 Content-Length: 1464
 Vary: Accept-Encoding
@@ -409,13 +409,13 @@ Connection: keep-alive
 ```
 
 ```bash
-$ curl 'http://localhost:3000/ventas/?_page=3' -i
+$ curl 'https://macowins-server.herokuapp.com/ventas/?_page=3' -i
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Expires: -1
 X-Total-Count: 500
 Access-Control-Expose-Headers: X-Total-Count, Link
-Link: <http://localhost:3000/ventas/?_page=1>; rel="first", <http://localhost:3000/ventas/?_page=2>; rel="prev", <http://localhost:3000/ventas/?_page=4>; rel="next", <http://localhost:3000/ventas/?_page=50>; rel="last"
+Link: <https://macowins-server.herokuapp.com/ventas/?_page=1>; rel="first", <https://macowins-server.herokuapp.com/ventas/?_page=2>; rel="prev", <https://macowins-server.herokuapp.com/ventas/?_page=4>; rel="next", <https://macowins-server.herokuapp.com/ventas/?_page=50>; rel="last"
 Content-Type: application/json; charset=utf-8
 Content-Length: 1467
 Vary: Accept-Encoding
@@ -470,7 +470,7 @@ Pragma: no-cache
 Expires: -1
 X-Total-Count: 100
 Access-Control-Expose-Headers: X-Total-Count, Link
-Link: <http://localhost:3000/posts/?_page=1>; rel="first", <http://localhost:3000/posts/?_page=2>; rel="next", <http://localhost:3000/posts/?_page=10>; rel="last"
+Link: <https://macowins-server.herokuapp.com/posts/?_page=1>; rel="first", <https://macowins-server.herokuapp.com/posts/?_page=2>; rel="next", <https://macowins-server.herokuapp.com/posts/?_page=10>; rel="last"
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
 Content-Length: 794
@@ -502,11 +502,11 @@ Algunas de estas no las entenderemos. Pero las que sí nos dan información rele
 ## 8. Compresión
 
 ```bash
-$ curl 'http://localhost:3000/ventas' -i
+$ curl 'https://macowins-server.herokuapp.com/ventas' -i
 ```
 
 ```bash
-$ curl 'http://localhost:3000/ventas' -i -H "Accept-Encoding: gzip"
+$ curl 'https://macowins-server.herokuapp.com/ventas' -i -H "Accept-Encoding: gzip"
 X-Powered-By: Express
 Expires: -1
 Content-Type: application/json; charset=utf-8
@@ -523,10 +523,10 @@ r^T<87>
 ...
 ```
 
-> 💡 Tip: Probá hacer `curl 'http://localhost:3000/ventas' -i -H "Accept-Encoding: gzip" | less` para ver mejor el resultado
+> 💡 Tip: Probá hacer `curl 'https://macowins-server.herokuapp.com/ventas' -i -H "Accept-Encoding: gzip" | less` para ver mejor el resultado
 
 ```bash
-$ curl 'http://localhost:3000/ventas' -i -H "Accept-Encoding: gzip" --compressed
+$ curl 'https://macowins-server.herokuapp.com/ventas' -i -H "Accept-Encoding: gzip" --compressed
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Expires: -1
@@ -554,7 +554,7 @@ Transfer-Encoding: chunked
 
 
 ```bash
-$ curl 'http://localhost:3000/prendas/1' -i -H "Accept-Encoding: gzip"
+$ curl 'https://macowins-server.herokuapp.com/prendas/1' -i -H "Accept-Encoding: gzip"
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Expires: -1
