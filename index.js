@@ -1,5 +1,8 @@
-// server.js
-const jsonServer = require('json-server');;
+const process = require('process');
+
+const port = process.env.PORT || 3000;
+
+const jsonServer = require('json-server');
 const db = require('./server/db')();
 const internalError = require('./server/internal-error');
 const lessHeaders = require('./server/less-headers');
@@ -15,6 +18,7 @@ server.use(lessHeaders);
 server.use(notFound);
 server.use(router);
 
-server.listen(3000, () => {
+
+server.listen(port, () => {
   console.log('Macowins is running')
 })
