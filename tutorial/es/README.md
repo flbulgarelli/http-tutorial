@@ -654,6 +654,11 @@ Accept y Content Type
 
 ## 17. Requests condicionales
 
+## 18. Contenido estático y dinámico
+
+## 19. Heroku
+
+> 🤔 Para pensar: ¿Dónde está desplegado QMP? ¿En la máquina de uno de los docentes? ¿En su máquina?
 
 
 
