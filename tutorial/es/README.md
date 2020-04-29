@@ -1,8 +1,16 @@
 # Tutorial  HTTP
 
 > 🏁 Antes de empezar: ¿qué es una arquitectura cliente-servidor? ¿cómo funciona?
+>
+> 🏁 Antes de empezar: ¿qué es un cliente? ¿y un servidor? ¿Cuál es el cliente por antomasia de la Web?
+>
+> 🏁 Antes de empezar: ¿qué tecnologías se usan en la Web? ¿En qué se desarrolla un cliente? ¿Y un servidor?
+>
+> 🏁 Antes de empezar: ¿Cuál es la diferencia entre un sitio Web y una API web?
 
 ## 1. Primeros pedidos
+
+Hagamos nuestro primer pedido:
 
 ```bash
 $ curl 'https://macowins-server.herokuapp.com/prendas/1'
@@ -12,6 +20,10 @@ $ curl 'https://macowins-server.herokuapp.com/prendas/1'
   "talle": 35
 }
 ```
+
+Veremos que lo que nos devuelve no es HTML, sino un formato llamado JSON
+
+> 🤔 Para Pensar: ¿por qué devolver JSON? ¿Quién puede leerlo? ¿A quién le sirve?
 
 ```bash
 $ curl 'https://macowins-server.herokuapp.com/prendas/20'
@@ -67,7 +79,8 @@ Date: Tue, 21 Apr 2020 12:43:18 GMT
 Connection: keep-alive
 ```
 
-> ✍️ Para pensar: ¿Qué cambió? ¿Qué cambio o cambios te parecen relevates?
+> 🤔 Para Pensar: ¿Qué cambió? ¿Qué cambio o cambios te parecen relevates?
+>
 > 💡 Tip: Probá hacer `curl 'https://macowins-server.herokuapp.com/prendas/400' -is | head -n1`
 
 
@@ -442,7 +455,30 @@ Connection: keep-alive
 > 🏅 Desafío: ¿cuando pesan las páginas ahora? ¿Más o menos que todas las ventas?
 
 
-## 6. Resolución de dominios
+## 6. URLs y URIs
+
+Pero ¿qué es `https://macowins-server.herokuapp.com/ventas/?_page=3`? Informalmente le diremos dirección, aunque su nombre técnico es URL.
+
+¿Y qué es una URL? Es cualquier _string_ con un formato particular llamado _URI_ nos permita _localizar un recurso_, por ejemplo en internet.
+
+Las URIs se componente de:
+
+  * un protocolo
+  * un dominio
+  * una ruta
+  * opcionalmente, parémtros
+  * opcionalmente, un fragmento
+
+> 🤔 Para pensar: ¿cuál es el protocolo que estamos estudiando? ¿Se observa en las URLs que venimos mencionando?
+
+> ✍️ Autoevaluación: ¿es el string _tutoriales://http/introductorio#7_ una URI? ¿Y una URL?
+
+
+## 7. Resolución de dominios
+
+> 🤔 Para pensar: ¿Qué ocurrirá si hacemos un pedido a un dominio inexistente? ¿Qué código de estado HTTP obtendremos?
+
+Observemos los siguientes pedidos
 
 ```bash
 $ curl 'http://localhost:300
@@ -450,13 +486,16 @@ curl: (7) Failed to connect to localhost port 300: Connection refused
 ```
 
 ```bash
-$ curl 'http://hostlocal:300
-curl: (6) Could not resolve host: hostlocal
+$ curl 'http://unSitioQueProbablementeNoExistaEnInternet
+curl: (6) Could not resolve host: unSitioQueProbablementeNoExistaEnInternet
 ```
 
-¿No era que iba a darnos status code particulares?
+¡Ups! En un caso no pudo resolver el dominio, y en el otro, no había nada escuchando en el puerto.
 
-## 7. Cabeceras
+> ✍️ Autoevaluación: ¿Por qué ante problemas de conexión obtenemos errores que no son de HTTP, sino de más bajo nivel?
+
+
+## 8. Cabeceras
 
 Antes ya aparecieron. Formalicemos
 
@@ -499,7 +538,7 @@ Algunas de estas no las entenderemos. Pero las que sí nos dan información rele
 
 > ✍️ Autoevaluación: ¿Para qué sirven las cabeceras? Mencioná al menos dos.
 
-## 8. Compresión
+## 9. Compresión
 
 ```bash
 $ curl 'https://macowins-server.herokuapp.com/ventas' -i
@@ -574,12 +613,14 @@ Connection: keep-alive
 
 > 🤔 Para pensar: ¿Sucedió lo que esperábamos? ¿Por qué puede ser?
 
+## 10. Desde el navegador
 
-## 9. Negociación de contenido
+¡Probemos estas mismas ideas desde el navegador!
 
-Accept y Content Type
+> 🏅 Desafío: consultá 4 sitios diferentes y averiguá para todos ellos qué servidor utilizan, si el contenido se transfiere encriptado, y la fecha de expieración del contenido.
 
-## 10. Borrando contenido
+
+## 11. Borrando contenido
 
 > ✍️ Autoevaluación: ¿qué es un método HTTP?
 
@@ -587,7 +628,8 @@ Accept y Content Type
 
 > 🤔 Para pensar: ¿Habrá algo que impida que no borre nada con un DELETE, o que borre algo con un GET?
 
-## 11. Creando contenido
+
+## 12. Creando contenido
 
 `CREATED`
 
@@ -595,15 +637,22 @@ Accept y Content Type
 
 > 🤔 Para pensar: A los métodos HTTP también se les dice verbos. ¿Por qué?
 
-## 12. Sobre la semántica de los verbos
+## 13. Sobre la semántica de los verbos
 
-## 13. Recursos
+## 14. Recursos
 
 Formalización de REST
 
 > 🤔 Para pensar: ¿por qué es importante respetar estas convenciones?
 
-## 14. Seguridad
+## 15. Negociación de contenido
+
+Accept y Content Type
+
+## 16. Seguridad
+
+
+## 17. Requests condicionales
 
 
 
