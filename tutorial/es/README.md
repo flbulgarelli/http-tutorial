@@ -617,8 +617,8 @@ Connection: keep-alive
 
 ¡Probemos estas mismas ideas desde el navegador!
 
-> 🏅 Desafío: consultá 4 sitios diferentes y averiguá para todos ellos qué servidor utilizan, si el contenido se transfiere encriptado, y la fecha de expieración del contenido.
-
+> 🏅 Desafío: consultá 4 sitios diferentes y averiguá para todos ellos qué servidor utilizan,
+> si el contenido se transfiere encriptado, y la fecha de expieración del contenido.
 
 ## 11. Borrando contenido
 
@@ -629,21 +629,121 @@ Connection: keep-alive
 > 🤔 Para pensar: ¿Habrá algo que impida que no borre nada con un DELETE, o que borre algo con un GET?
 
 
-## 12. Creando contenido
+## 12. Creando y actualizando contenido
 
-`CREATED`
+Probemos ahora crear una prenda:
+
+```bash
+$ curl -XPOST 'https://macowins-server.herokuapp.com/prendas/'
+{
+  "id": 21
+}
+```
+
+Como vemos, se creó una prenda con el id `21`, y lo que obtenemos como respuesta es el _recurso_ creado.
+
+> 🏅 Desafío: ¿qué código de estado devuelve cuando un _recurso_ es creado? Averigualo
+
+> 🤔 Para pensar: ¿Nos es realmente útil crear una prenda sin especificar más nada?
+
+> 🤔 Para pensar: ¿Por qué se creó con el id `21`?
+
+Pero para que las cosas sean más interesantes, vamos a especificar _el cuerpo_ del pedido HTTP, con el contenido de la prenda que queremos crear.
+
+```bash
+curl -XPOST 'https://macowins-server.herokuapp.com/prendas/' -i --data '{ "tipo": "chomba", "talle": "XS" }'
+{
+  "{ \"tipo\": \"chomba\", \"talle\": \"XS\" }": "",
+  "id": 22
+}
+```
+
+> ✍️ Autoevaluación: ¿para qué sirve la opción `--data`?
+
+> 🤔 Para pensar: Hmm, funcionó, pero ¿creó el contenido que queríamos? ¿Por qué?
+
+
+El servidor de QMP necesita que le especifiquemos el tipo de contenido, para que cuando creemos algo sepa de qué tipo de cosa estamos hablando. Usemos para eso la
+cabecera que vimos anteriormente: `Content-Type`
+
+
+```bash
+curl -XPOST 'https://macowins-server.herokuapp.com/prendas/' --data '{ "tipo": "chomba", "talle": "XS" }' -H 'Content-Type: application/json'
+{
+  "tipo": "chomba",
+  "talle": "XS",
+  "id": 25
+}
+```
+
+> 🤔 Para pensar: ¿por qué no especificamos el ID en el cuerpo?
+
+> 🏅 Desafío: Nos quedaron prendas con ids `21` y `22` que no nos sirve; ¡borralas!
+
+> 📝 Nota: el servidor de QMP aceptó la prenda aún sin especificar el tipo de contenido, pero la guardó de una forma incorrecta. Otros servidores podrían haber hecho un intento por descubrir el tipo de
+> todas maneras, o haber rechazado el pedido completamente, con un error de la familia `400`.
+
+Como vemos, haciendo POST sobre la ruta de `/prendas` creamos una prenda, sin especificar un id, dado que se generará solo. De todas formas, si quisieramos podríamos haberlo especificado
+agregándolo en el cuerpo.
 
 > 🏅 Desafío: Creá una venta.
 
-> 🤔 Para pensar: A los métodos HTTP también se les dice verbos. ¿Por qué?
+> 🏅 Desafío: Intentá hacer POST sobre una venta concreta, como por ejemplo `https://macowins-server.herokuapp.com/prendas/1`. ¿Qué sucede?
 
 ## 13. Sobre la semántica de los verbos
 
-## 14. Recursos
+> 🤔 Para pensar: A los métodos HTTP también se les dice verbos. ¿Por qué?
 
-Formalización de REST
+Como vemos, hay varios verbos (métodos) HTTP:
+
+* `OPTIONS`
+* `GET`
+* `POST`
+* `PUT`
+* `PATCH`
+* `DELETE`
+
+Nada nos impide borrar con GET, eliminar con POST o consultar con PUT. ¡Son todas convenciones!
+Estas convenciones nos hablan de una semántica para cada uno de los verbos, y es importante respetarlas:
+
+* `OPTIONS`: consultar meta-datos o configuraciones de HTTP
+* `GET`: consultar un contenido sin efecto
+* `POST`: crear un contenido
+* `PUT`: actualizar de forma total un contenido
+* `PATCH`: actualizar de forma parcial un contenido
+* `DELETE`: eliminar un contenido
 
 > 🤔 Para pensar: ¿por qué es importante respetar estas convenciones?
+
+
+> 🤔 Para pensar: `POST` es uno de los métodos con efecto más antiguos de HTTP, y por eso es común que a veces se lo use
+> para resolver operaciones que no encajan en otras semánticas. ¿Se te ocurre algún otro ejemplo fuera de HTTP en que pase algo así?
+
+
+## 14. Recursos
+
+Formalización de REST: organizaremos nuestras rutas, tanto de una API como de **un sitio común y corriente**, en forma de recursos y _colecciones_.
+
+* `GET /ventas/`: consultar todos (listar)
+* `DELETE /ventas/`: borrar todos
+* `POST /ventas/`: crear uno
+* `POST /ventas/1` crear uno con ID (QMP no lo soporta)
+* `GET /ventas/1`: consultar uno
+* `PUT /ventas/1`: modificar uno
+* `DELETE /ventas/1`: eliminar uno
+
+> 🤔 Para pensar: nuevamente, ¿por qué es importante respetar estas convenciones?
+
+> 🏅 Desafío: ¿cuales de los siguientes sitios tiene (o parecen tener, al menos) rutas REST?
+>
+>   * Github
+>   * Youtube
+>   * Facebook
+>   * Infobae, Pagina12, La Nacion
+>   * UNQ, UCEMA
+>
+> 🏅 Desafío: si no se organizan de forma REST, ¿cómo se organizan sus rutas?
+
 
 ## 15. Negociación de contenido
 
@@ -651,12 +751,13 @@ Accept y Content Type
 
 ## 16. Seguridad
 
-
 ## 17. Requests condicionales
 
 ## 18. Contenido estático y dinámico
 
-## 19. Heroku
+## HTTP es stateless
+
+## 20. Heroku
 
 > 🤔 Para pensar: ¿Dónde está desplegado QMP? ¿En la máquina de uno de los docentes? ¿En su máquina?
 
