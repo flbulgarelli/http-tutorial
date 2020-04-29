@@ -744,18 +744,37 @@ Formalización de REST: organizaremos nuestras rutas, tanto de una API como de *
 >
 > 🏅 Desafío: si no se organizan de forma REST, ¿cómo se organizan sus rutas?
 
+> 💬 Para discutir: recursos anidados
 
 ## 15. Negociación de contenido
 
-Accept y Content Type
+> 💬 Para discutir:
+> - Accept
+> - Content Type
 
 ## 16. Seguridad
 
+> 💬 Para discutir:
+>   - `Authorization`
+>   - `Basic` y `Bearer`
+
 ## 17. Requests condicionales
+
+> 👀 Ver: https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests
 
 ## 18. Contenido estático y dinámico
 
+Consultar: `https://macowins-server.herokuapp.com/`.
+Observar el pie de página
+
 ## HTTP es stateless
+
+> 💬 Para discutir:
+> - Concepto de sesión
+> - Tipos de sesión:
+>   - server side vs client side
+>   - en memoria vs en cookie
+> - `Cookie` y `Set-Cookie`
 
 ## 20. Heroku
 
