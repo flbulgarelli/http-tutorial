@@ -45,7 +45,7 @@ $ curl 'https://macowins-server.herokuapp.com/prendas/1'
 
 Veremos que lo que nos devuelve no es HTML, sino un formato llamado JSON
 
-> 🤔 Para Pensar: ¿por qué devolver JSON? ¿Quién puede leerlo? ¿A quién le sirve?
+> 🤔 Para pensar: ¿por qué devolver JSON? ¿Quién puede leerlo? ¿A quién le sirve?
 
 ```bash
 $ curl 'https://macowins-server.herokuapp.com/prendas/20'
@@ -58,7 +58,7 @@ $ curl 'https://macowins-server.herokuapp.com/prendas/20'
 
 > ✍️ Autoevaluación: ¿para qué sirve CURL?
 
-> 🤔 Para Pensar: ¿qué es una URL?
+> 🤔 Para pensar: ¿qué es una URL?
 
 ## 2. Códigos de respuesta
 
@@ -101,7 +101,7 @@ Date: Tue, 21 Apr 2020 12:43:18 GMT
 Connection: keep-alive
 ```
 
-> 🤔 Para Pensar: ¿Qué cambió? ¿Qué cambio o cambios te parecen relevates?
+> 🤔 Para pensar: ¿Qué cambió? ¿Qué cambio o cambios te parecen relevates?
 >
 > 💡 Tip: Probá hacer `curl 'https://macowins-server.herokuapp.com/prendas/400' -is | head -n1`
 
@@ -873,7 +873,7 @@ Date: Thu, 30 Apr 2020 01:40:04 GMT
 Connection: keep-alive
 ```
 
-> 🤔 Para Pensar: ¿Y para qué nos podría servir ésto? ¿Por qué creés que no responde un cuerpo en este caso?
+> 🤔 Para pensar: ¿Y para qué nos podría servir ésto? ¿Por qué creés que no responde un cuerpo en este caso?
 
 Supongamos que ahora modificamos el contenido de la prenda 20, indicando que no tiene stock:
 
@@ -929,6 +929,8 @@ Connection: keep-alive
 > 🏅 Desafío: ¿Y si lo hacemos con el nuevo? ¿Qué debería suceder? ¡Averigualo!
 
 > 👀 Para más detalles, ver: https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests
+
+> 🔎 Para investigar: ¿Qué significa la `W/` en los `ETags`?
 
 ## 21. Contenido estático y dinámico
 
