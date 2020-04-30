@@ -14,12 +14,13 @@
   * [12. Creando y actualizando contenido](#12-creando-y-actualizando-contenido)
   * [13. Sobre la semántica de los verbos](#13-sobre-la-semantica-de-los-verbos)
   * [14. Recursos](#14-recursos)
-  * [15. Negociación de contenido](#15-negociacion-de-contenido)
-  * [16. Seguridad](#16-seguridad)
-  * [17. Requests condicionales](#17-requests-condicionales)
-  * [18. Contenido estático y dinámico](#18-contenido-estatico-y-dinamico)
-  * [19. HTTP es stateless](#19-http-es-stateless)
-  * [20. Heroku](#20-heroku)
+  * [15. Paréntesis: servidores y despliegue](#15-parentesis-servidores-y-despliegue)
+  * [16. HTTP es stateless](#16-http-es-stateless)
+  * [17. Redirecciones](#17-redirecciones)
+  * [18. Negociación de contenido](#18-negociacion-de-contenido)
+  * [19. Seguridad](#19-seguridad)
+  * [20. Requests condicionales](#20-requests-condicionales)
+  * [21. Contenido estático y dinámico](#21-contenido-estatico-y-dinamico)
 
 > 🏁 Antes de empezar: ¿qué es una arquitectura cliente-servidor? ¿cómo funciona?
 >
@@ -767,28 +768,17 @@ Formalización de REST: organizaremos nuestras rutas, tanto de una API como de *
 
 > 💬 Para discutir: recursos anidados
 
-## 15. Negociación de contenido
+> 🏋️ Ejercicio: Pongamos a prueba nuestros conocimientos de REST [con este problema](https://docs.google.com/document/d/1lNQERQZuWsve0k7VUVVPtliX9aR6JE0NC8tamYON_9A/edit)
 
-> 💬 Para discutir:
-> - Accept
-> - Content Type
+## 15. Paréntesis: servidores y despliegue
 
-## 16. Seguridad
+> 🤔 Para pensar: ¿Dónde está desplegado QMP? ¿En la máquina de uno de los docentes? ¿En su máquina?
 
-> 💬 Para discutir:
->   - `Authorization`
->   - `Basic` y `Bearer`
+> 🏅 Desafío: ¿En dónde está desplegado QMP? ¿Podés averiguarlo las cabeceras HTTP y/o la URL?
 
-## 17. Requests condicionales
+> 💬 Para discutir: qué es Heroku y cómo se despliega allí
 
-> 👀 Ver: https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests
-
-## 18. Contenido estático y dinámico
-
-Consultar: `https://macowins-server.herokuapp.com/`.
-Observar el pie de página
-
-## 19. HTTP es stateless
+## 16. HTTP es stateless
 
 > 💬 Para discutir:
 > - Concepto de sesión
@@ -797,9 +787,150 @@ Observar el pie de página
 >   - en memoria vs en cookie
 > - `Cookie` y `Set-Cookie`
 
-## 20. Heroku
+## 17. Redirecciones
 
-> 🤔 Para pensar: ¿Dónde está desplegado QMP? ¿En la máquina de uno de los docentes? ¿En su máquina?
+## 18. Negociación de contenido
+
+> 💬 Para discutir:
+> - Accept
+> - Content Type
+
+## 19. Seguridad
+
+> 💬 Para discutir:
+>   - `Authorization`
+>   - `Basic` y `Bearer`
+
+## 20. Requests condicionales
+
+Pidamos la prenda número 20:
+
+```bash
+$ curl 'https://macowins-server.herokuapp.com/prendas/20' -i
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Expires: -1
+Content-Type: application/json; charset=utf-8
+Content-Length: 49
+ETag: W/"31-OlDFK7SS8oUCKcn/LZE2poJFDDo"
+Vary: Accept-Encoding
+Date: Thu, 30 Apr 2020 01:40:19 GMT
+Connection: keep-alive
+
+{
+  "id": 20,
+  "tipo": "saco",
+  "talle": "XL"
+}
+```
+
+Pero esta vez observemos la cabecera `ETag` (por _entity-tag_):
+
+```bash
+$ curl 'https://macowins-server.herokuapp.com/prendas/4' -is | grep 'ETag'
+ETag: W/"31-OlDFK7SS8oUCKcn/LZE2poJFDDo"
+```
+
+¿Qué es ésto? Es un código que identifica unívocamente al estado del recurso. Es decir, el valor `"31-OlDFK7SS8oUCKcn/LZE2poJFDDo"` representa exactamente a una
+prenda que tiene `id` `20`, `tipo` `"saco"` y `talle` `"XL"`, ni más ni menos.
 
 
+Saber esto nos permite hacer uso de una nueva cabecera: `If-None-Match`, que nos permite hacer pedidos especificar uno o más `ETags`, de forma que cuando el `ETag` dado **NO coincida**
+con el que tiene el servidor, responda normalmente:
 
+```bash
+$ curl 'https://macowins-server.herokuapp.com/prendas/20' -i -H 'If-None-Match: "otracosa"'
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Expires: -1
+Content-Type: application/json; charset=utf-8
+Content-Length: 49
+ETag: W/"31-OlDFK7SS8oUCKcn/LZE2poJFDDo"
+Vary: Accept-Encoding
+Date: Thu, 30 Apr 2020 01:40:19 GMT
+Connection: keep-alive
+
+{
+  "id": 20,
+  "tipo": "saco",
+  "talle": "XL"
+}
+```
+
+> 🏅 Desafío: ¿Qué sucede cuando coincide? Probá consultar con el valor `"31-OlDFK7SS8oUCKcn/LZE2poJFDDo"` (comillas incluidas)
+
+
+Como vemos cuando **SÍ coincide**, nos dice que el el recurso _sigue siendo el mismo_, mediante un código `304`:
+
+
+```bash
+curl 'https://macowins-server.herokuapp.com/prendas/20' -i -H 'If-None-Match: "31-OlDFK7SS8oUCKcn/LZE2poJFDDo"'
+HTTP/1.1 304 Not Modified
+X-Powered-By: Express
+Expires: -1
+ETag: W/"31-OlDFK7SS8oUCKcn/LZE2poJFDDo"
+Date: Thu, 30 Apr 2020 01:40:04 GMT
+Connection: keep-alive
+```
+
+> 🤔 Para Pensar: ¿Y para qué nos podría servir ésto? ¿Por qué creés que no responde un cuerpo en este caso?
+
+Supongamos que ahora modificamos el contenido de la prenda 20, indicando que no tiene stock:
+
+```bash
+$ curl -XPATCH 'https://macowins-server.herokuapp.com/prendas/20' --data '{ "enStock": false }' -H 'Content-Type: application/json' -i
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Expires: -1
+Content-Type: application/json; charset=utf-8
+Content-Length: 69
+ETag: W/"45-38RNDuIjR/nqwDhm73CxIQFBqWc"
+Vary: Accept-Encoding
+Date: Thu, 30 Apr 2020 02:04:18 GMT
+Connection: keep-alive
+
+{
+  "id": 20,
+  "tipo": "saco",
+  "talle": "XL",
+  "enStock": false
+}
+```
+
+> ⚠️ ¡Cuidado! Notá que esta vez usamos (por primera vez) `PATCH`, no `PUT`. ¿Por qué pensás que lo hicimos?
+
+Ahora vevmos que el `ETag` es diferente: `"45-38RNDuIjR/nqwDhm73CxIQFBqWc"`. Porque claro, ¡la prenda cambió!
+
+> 🏅 Desafío: si ahora consultamos por la prenda 20, ¿el `ETag` seguirá siendo el mismo? ¿Será `"45-38RNDuIjR/nqwDhm73CxIQFBqWc"` (el nuevo), `"31-OlDFK7SS8oUCKcn/LZE2poJFDDo"` (el viejo) u otro?
+> Averigualo obteniendo con `curl` y `grep` el `ETag` de la prenda 20.
+
+Si ahora hacemos un _pedido condicional_ con el viejo `ETag`, la respusta cambiará:
+
+```bash
+$ curl 'http://localhost:3000/prendas/20' -i -H 'If-None-Match: "31-OlDFK7SS8oUCKcn/LZE2poJFDDo"'
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Expires: -1
+Content-Type: application/json; charset=utf-8
+Content-Length: 69
+ETag: W/"45-38RNDuIjR/nqwDhm73CxIQFBqWc"
+Vary: Accept-Encoding
+Date: Thu, 30 Apr 2020 02:15:18 GMT
+Connection: keep-alive
+
+{
+  "id": 20,
+  "tipo": "saco",
+  "talle": "XL",
+  "enStock": false
+}
+```
+
+> 🏅 Desafío: ¿Y si lo hacemos con el nuevo? ¿Qué debería suceder? ¡Averigualo!
+
+> 👀 Para más detalles, ver: https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests
+
+## 21. Contenido estático y dinámico
+
+Consultar: `https://macowins-server.herokuapp.com/`.
+Observar el pie de página
