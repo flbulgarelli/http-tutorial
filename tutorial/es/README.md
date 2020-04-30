@@ -1,5 +1,26 @@
 # Tutorial  HTTP
 
+- [Tutorial HTTP](#tutorial--http)
+  * [1. Primeros pedidos](#1-primeros-pedidos)
+  * [2. Códigos de respuesta](#2-codigos-de-respuesta)
+  * [3. Parámetros](#3-parametros)
+  * [4. Paginación](#4-paginacion)
+  * [6. URLs y URIs](#6-urls-y-uris)
+  * [7. Resolución de dominios](#7-resolucion-de-dominios)
+  * [8. Cabeceras](#8-cabeceras)
+  * [9. Compresión](#9-compresion)
+  * [10. Desde el navegador](#10-desde-el-navegador)
+  * [11. Borrando contenido](#11-borrando-contenido)
+  * [12. Creando y actualizando contenido](#12-creando-y-actualizando-contenido)
+  * [13. Sobre la semántica de los verbos](#13-sobre-la-semantica-de-los-verbos)
+  * [14. Recursos](#14-recursos)
+  * [15. Negociación de contenido](#15-negociacion-de-contenido)
+  * [16. Seguridad](#16-seguridad)
+  * [17. Requests condicionales](#17-requests-condicionales)
+  * [18. Contenido estático y dinámico](#18-contenido-estatico-y-dinamico)
+  * [19. HTTP es stateless](#19-http-es-stateless)
+  * [20. Heroku](#20-heroku)
+
 > 🏁 Antes de empezar: ¿qué es una arquitectura cliente-servidor? ¿cómo funciona?
 >
 > 🏁 Antes de empezar: ¿qué es un cliente? ¿y un servidor? ¿Cuál es el cliente por antomasia de la Web?
@@ -767,7 +788,7 @@ Formalización de REST: organizaremos nuestras rutas, tanto de una API como de *
 Consultar: `https://macowins-server.herokuapp.com/`.
 Observar el pie de página
 
-## HTTP es stateless
+## 19. HTTP es stateless
 
 > 💬 Para discutir:
 > - Concepto de sesión
