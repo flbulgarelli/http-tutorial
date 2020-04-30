@@ -778,6 +778,82 @@ Formalización de REST: organizaremos nuestras rutas, tanto de una API como de *
 
 > 💬 Para discutir: qué es Heroku y cómo se despliega allí
 
+```bash
+$ heroku login -i
+heroku: Enter your login credentials
+Email: me@example.com
+Password: ***************
+Two-factor code: ********
+Logged in as me@heroku.com
+```
+
+```bash
+$ git push heroku master
+Total 0 (delta 0), reused 0 (delta 0)
+remote: Compressing source files... done.
+remote: Building source:
+remote:
+remote: -----> Node.js app detected
+remote:
+remote: -----> Creating runtime environment
+remote:
+remote:        NPM_CONFIG_LOGLEVEL=error
+remote:        NODE_ENV=production
+remote:        NODE_MODULES_CACHE=true
+remote:        NODE_VERBOSE=false
+remote:
+remote: -----> Installing binaries
+remote:        engines.node (package.json):  unspecified
+remote:        engines.npm (package.json):   unspecified (use default)
+remote:
+remote:        Resolving node version 12.x...
+remote:        Downloading and installing node 12.16.3...
+remote:        Using default npm version: 6.14.4
+remote:
+remote: -----> Restoring cache
+remote:        Cached directories were not restored due to a change in version of node, npm, yarn or stack
+remote:        Module installation may take longer for this build
+remote:
+remote: -----> Installing dependencies
+remote:        Installing node modules (package.json + package-lock)
+remote:        added 229 packages from 124 contributors and audited 449 packages in 6.012s
+remote:
+remote:        7 packages are looking for funding
+remote:          run `npm fund` for details
+remote:
+remote:        found 0 vulnerabilities
+remote:
+remote:
+remote: -----> Build
+remote:
+remote: -----> Caching build
+remote:        - node_modules
+remote:
+remote: -----> Pruning devDependencies
+remote:        audited 449 packages in 1.845s
+remote:
+remote:        7 packages are looking for funding
+remote:          run `npm fund` for details
+remote:
+remote:        found 0 vulnerabilities
+remote:
+remote:
+remote: -----> Build succeeded!
+remote: -----> Discovering process types
+remote:        Default types for buildpack -> web
+remote:
+remote: -----> Compressing...
+remote:        Done: 24.6M
+remote: -----> Launching...
+remote:        Released v10
+remote:        https://macowins-server.herokuapp.com/ deployed to Heroku
+remote:
+remote: Verifying deploy... done.
+To https://git.heroku.com/macowins-server.git
+   07f9006..aa4b7bd  master -> master
+```
+
+
 ## 16. HTTP es stateless
 
 > 💬 Para discutir:
