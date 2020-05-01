@@ -928,6 +928,95 @@ To https://git.heroku.com/macowins-server.git
 
 ## 17. Redirecciones
 
+Consultemos al muy conocido busacador `google.com`:
+
+
+```bash
+$ curl http://google.com/ -i
+HTTP/1.1 301 Moved Permanently
+Location: http://www.google.com/
+Content-Type: text/html; charset=UTF-8
+Date: Fri, 01 May 2020 21:39:14 GMT
+Expires: Sun, 31 May 2020 21:39:14 GMT
+Cache-Control: public, max-age=2592000
+Server: gws
+Content-Length: 219
+X-XSS-Protection: 0
+X-Frame-Options: SAMEORIGIN
+
+<HTML><HEAD><meta http-equiv="content-type" content="text/html;charset=utf-8">
+<TITLE>301 Moved</TITLE></HEAD><BODY>
+<H1>301 Moved</H1>
+The document has moved
+<A HREF="http://www.google.com/">here</A>.
+</BODY></HTML>
+```
+
+¿Qué quiere decir ésto? El servidor de Google nos dijo que en esa ubicación no está lo que andamos buscando, sino en otra. ¿A cuál?
+
+> 🏅 Desafío: mirá las cabeceras y averiguá a dónde tenemos que ir.
+
+> 🏅 Desafío: ¿cuál es el nuevo código de estado utilizado?
+
+Efectivamente, `Location` nos dice a dónde (re)dirigirnos. No es de sorprender que ahora el siguiente pedido funcione como esperamos:
+
+```bash
+$ curl http://www.google.com/ -i
+HTTP/1.1 200 OK
+Date: Fri, 01 May 2020 21:43:52 GMT
+Expires: -1
+Cache-Control: private, max-age=0
+Content-Type: text/html; charset=ISO-8859-1
+P3P: CP="This is not a P3P policy! See g.co/p3phelp for more info."
+Server: gws
+X-XSS-Protection: 0
+X-Frame-Options: SAMEORIGIN
+Set-Cookie: 1P_JAR=2020-05-01-21; expires=Sun, 31-May-2020 21:43:52 GMT; path=/; domain=.google.com; Secure
+Set-Cookie: NID=203=kTYpSPLU8DGcNo-DaJiKWCn3ei0Yo9ASkCoh8-QDQ9KbtxCrnIwxckj3atgK5wB8Ahkk9vPZZFlQfQJgbs80sMvk2CcrvwXLjs-Uaz0wM7cqi9dEx7nrGi1OpL9JELLDwkfahnLGr85bAiFzaHg7a9d-aCAaPcsguQ3MJcQQmE8; expires=Sat, 31-Oct-2020 21:43:52 GMT; path=/; domain=.google.com; HttpOnly
+Accept-Ranges: none
+Vary: Accept-Encoding
+Transfer-Encoding: chunked
+
+<!doctype html>.....
+```
+
+Al igual que los navegadores, que automáticamente reconocen este código de estado `301` y nos redirigen automáticamente, `curl` cuenta con la opción `-L`
+
+```bash
+curl http://google.com/ -iL
+HTTP/1.1 301 Moved Permanently
+Location: http://www.google.com/
+Content-Type: text/html; charset=UTF-8
+Date: Fri, 01 May 2020 21:46:14 GMT
+Expires: Sun, 31 May 2020 21:46:14 GMT
+Cache-Control: public, max-age=2592000
+Server: gws
+Content-Length: 219
+X-XSS-Protection: 0
+X-Frame-Options: SAMEORIGIN
+
+HTTP/1.1 200 OK
+Date: Fri, 01 May 2020 21:46:14 GMT
+Expires: -1
+Cache-Control: private, max-age=0
+Content-Type: text/html; charset=ISO-8859-1
+P3P: CP="This is not a P3P policy! See g.co/p3phelp for more info."
+Server: gws
+X-XSS-Protection: 0
+X-Frame-Options: SAMEORIGIN
+Set-Cookie: 1P_JAR=2020-05-01-21; expires=Sun, 31-May-2020 21:46:14 GMT; path=/; domain=.google.com; Secure
+Set-Cookie: NID=203=rWirgAnHsiCpyvJffO9W-KmyuhZRK89E8epLs86Fe5jhT9XhAz8aPTFLRzFrUSnxrt_Sbl99LseCkw9wsxkA7vRAC7iw8NfCrZ2HX-r5j4f-NnOjT2ElEsppEQGLFDTO1VDdaG34gZJflszZNV4di-q7-y37cswfG2UIQmg1hNs; expires=Sat, 31-Oct-2020 21:46:14 GMT; path=/; domain=.google.com; HttpOnly
+Accept-Ranges: none
+Vary: Accept-Encoding
+Transfer-Encoding: chunked
+
+<!doctype html>....
+```
+
+> ✍️ Autoevaluación: ¿por qué ahora en la salida de `curl` vemos dos grupos de cabeceras?
+
+> 💬 Para discutir: temporales vs permamentes
+
 ## 18. Negociación de contenido
 
 > 💬 Para discutir:
