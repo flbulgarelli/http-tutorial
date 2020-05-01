@@ -47,6 +47,8 @@ Veremos que lo que nos devuelve no es HTML, sino un formato llamado JSON
 
 > 🤔 Para pensar: ¿por qué devolver JSON? ¿Quién puede leerlo? ¿A quién le sirve?
 
+Ahora hagamos otro pedido para traer a la prenda `20`:
+
 ```bash
 $ curl 'https://macowins-server.herokuapp.com/prendas/20'
 {
@@ -58,7 +60,7 @@ $ curl 'https://macowins-server.herokuapp.com/prendas/20'
 
 > ✍️ Autoevaluación: ¿para qué sirve CURL?
 
-> 🤔 Para pensar: ¿qué es una URL?
+> 🤔 Para pensar: ¿qué es una dirección? ¿Te suena el término URL? ¿Por qué `curl` se llamará así?
 
 ## 2. Códigos de respuesta
 
@@ -86,7 +88,7 @@ Connection: keep-alive
 }
 ```
 
-> ✍️ Autoevaluación: ¿Para qué sirve -i?
+> ✍️ Autoevaluación: ¿Para qué sirve el flag `-i`? ¿Que nos permitió? Contratá tu respuesta con el lo que dice `curl --help`
 
 
 ```bash
@@ -102,7 +104,7 @@ Connection: keep-alive
 ```
 
 > 🤔 Para pensar: ¿Qué cambió? ¿Qué cambio o cambios te parecen relevates?
->
+
 > 💡 Tip: Probá hacer `curl 'https://macowins-server.herokuapp.com/prendas/400' -is | head -n1`
 
 
@@ -116,7 +118,7 @@ HTTP/1.1 404 Not Found
 
 > ✍️ Autoevaluación: ¿qué es un status code y para qué me sirve?
 
-Veamos otro código de respuesta más:
+Veamos otro código de respuesta más, que nos permitirá usar una funcionalidad que es _muy muy nueva y que quizás aún no ande bien_:
 
 ```bash
 $ curl 'https://macowins-server.herokuapp.com/nueva-funcionalidad-que-a-veces-no-anda-bien' -i
@@ -152,6 +154,8 @@ Connection: keep-alive
 
 
 ## 3. Parámetros
+
+Hagamos un nuevo pedido, pero ahora a una _ruta_ ligeramente diferente:
 
 ```bash
 $ curl 'https://macowins-server.herokuapp.com/prendas'
@@ -201,6 +205,8 @@ $ curl 'https://macowins-server.herokuapp.com/prendas'
 
 > 🏅 Desafío: hacé `curl 'https://macowins-server.herokuapp.com/ventas'` y `curl 'https://macowins-server.herokuapp.com/ventas/2'` y contrastá el resultado con tu respuesta anterior
 
+Este listado es muy completo, pero por eso también puede ser engorroso para usar. Quizás podríamos traer sólo una parte así...
+
 ```bash
 $ curl 'https://macowins-server.herokuapp.com/prendas?tipo=pantalon'
 [
@@ -222,6 +228,8 @@ $ curl 'https://macowins-server.herokuapp.com/prendas?tipo=pantalon'
   }
 ]
 ```
+
+...o así:
 
 ```bash
 $ curl 'https://macowins-server.herokuapp.com/prendas?tipo=saco'
@@ -254,9 +262,11 @@ $ curl 'https://macowins-server.herokuapp.com/prendas?tipo=saco'
 ]
 ```
 
+> ✍️ Autoevaluación: ¿qué acabamos de hacer? ¿para qué nos sirvió el `?...=...`?
+
 > 🏅 Desafío: Obtené las remeras.
 
-Es común que las URL que admiten parámetros soporten más de uno, por ejemplo:
+Es común que las APIs que admiten parámetros soporten más de uno, por ejemplo:
 
 ```bash
 $ curl 'https://macowins-server.herokuapp.com/prendas?talle=40'
@@ -283,6 +293,7 @@ $ curl 'https://macowins-server.herokuapp.com/prendas?talle=40&tipo=pantalon'
 ```
 
 > 🏅 Desafío: Obtené las remeras XS
+
 > ✍️ Autoevaluación: ¿Para qué sirven los parámetros?
 
 ## 4. Paginación
@@ -318,7 +329,7 @@ Connection: keep-alive
 ...
 ```
 
-...pero esta vez prestemos atención a esta parte de la respuesta:
+...pero esta vez prestemos atención a esta parte de la respuesta...
 
 ```
 Content-Length: 794
@@ -326,7 +337,7 @@ Content-Length: 794
 
 > 💡 Tip:  Probá hacer `curl 'https://macowins-server.herokuapp.com/prendas' -is | grep 'Content-Length'`
 
-y comparemos el resultado con el de:
+...y comparemos el resultado con el de:
 
 ```bash
 $ curl 'https://macowins-server.herokuapp.com/ventas' -i
@@ -359,7 +370,7 @@ Como se observa, tienen tamaños diferentes: a mayor la cantidad de elementos, m
 > 🤔 Para pensar: ¿Cuál será más rápido de descargar? ¿Por qué?
 
 Ya sea porque la respuesta es demasiado "pesada", o porque simplemente sólo queremos una parte de la misma, en ocasiones querremos recorrer el resultado como
-si fueran las páginas de un libro: de una a la vez. Macowins por eso nos permite utilizar un parámetro llamado `_page`, con el que podemos decirle qué número de página queremos.
+si fueran las páginas de un libro: de una a la vez. Por eso Macowins nos permite utilizar un parámetro llamado `_page`, con el que podemos decirle qué número de página queremos.
 
 ```bash
 $ curl 'https://macowins-server.herokuapp.com/ventas/?_page=1' -i
@@ -487,9 +498,16 @@ Las URIs se componente de:
 
   * un protocolo
   * un dominio
+  * opcionalmente, un puerto
   * una ruta
-  * opcionalmente, parémtros
-  * opcionalmente, un fragmento
+  * opcionalmente, parámetros
+  * opcionalmente, un fragmento, que indica en que sección queremos obtener del recurso que estamos consultando.
+
+Y se ven así: `protocolo://dominio:puerto/ruta#fragmento?parametro1=valor1&parametro2=valor2`. Las URIs son simplemente un formato estandarizado de strings,
+que por sí mismo no significa nada. Por ejemplo `cerebro://recuerdos:3403/recientes#hoy?tema=http` es sólo un string que cumple la estructura de una URI, aunque probablemente
+no sea muy util (o al menos no el año 2020 🧠)
+
+> 🏅 Desafío: decí usando tus palabras qué significa la URI de este ejemplo _cerebtral_ 😛.
 
 > 🤔 Para pensar: ¿cuál es el protocolo que estamos estudiando? ¿Se observa en las URLs que venimos mencionando?
 
@@ -500,7 +518,7 @@ Las URIs se componente de:
 
 > 🤔 Para pensar: ¿Qué ocurrirá si hacemos un pedido a un dominio inexistente? ¿Qué código de estado HTTP obtendremos?
 
-Observemos los siguientes pedidos
+Observemos los siguientes pedidos:
 
 ```bash
 $ curl 'http://localhost:300
@@ -512,10 +530,55 @@ $ curl 'http://unSitioQueProbablementeNoExistaEnInternet
 curl: (6) Could not resolve host: unSitioQueProbablementeNoExistaEnInternet
 ```
 
+```bash
+$ curl 'http://google.com:8902' -i --connect-timeout 5
+curl: (28) Connection timed out after 5000 milliseconds
+```
+
 ¡Ups! En un caso no pudo resolver el dominio, y en el otro, no había nada escuchando en el puerto.
 
 > ✍️ Autoevaluación: ¿Por qué ante problemas de conexión obtenemos errores que no son de HTTP, sino de más bajo nivel?
 
+> ✍️ Autoevaluación: ¿Para qué sirve el flag `--connect-timeout`? Contratá tu respuesta con el lo que dice `curl --help`
+
+
+Como vemos esto nos abre una serie de nuevos errores: los errores de conexión, que como vemos pueden deberse por ejemplo a:
+
+ * el puerto al que estamos intentando conectarnos no es el adecuado
+ * el el dominio no existe en internet
+
+> 💬 Para discutir: Pero, ¿qué es un dominio? ¿Qué otra forma tenemos de llegar a una máquina que sea a través de su dominio?
+
+```bash
+$ ping google.com
+PING google.com (172.217.172.110) 56(84) bytes of data.
+64 bytes from eze06s02-in-f14.1e100.net (172.217.172.110): icmp_seq=1 ttl=54 time=15.8 ms
+64 bytes from eze06s02-in-f14.1e100.net (172.217.172.110): icmp_seq=2 ttl=54 time=24.5 ms
+64 bytes from eze06s02-in-f14.1e100.net (172.217.172.110): icmp_seq=3 ttl=54 time=24.5 ms
+64 bytes from eze06s02-in-f14.1e100.net (172.217.172.110): icmp_seq=4 ttl=54 time=25.2 ms
+^C
+--- google.com ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3005ms
+rtt min/avg/max/mdev = 15.844/22.553/25.276/3.888 ms
+```
+
+```bash
+$ ping google.com
+PING google.com (172.217.162.14) 56(84) bytes of data.
+64 bytes from eze04s07-in-f14.1e100.net (172.217.162.14): icmp_seq=1 ttl=54 time=12.9 ms
+64 bytes from eze04s07-in-f14.1e100.net (172.217.162.14): icmp_seq=2 ttl=54 time=27.8 ms
+64 bytes from eze04s07-in-f14.1e100.net (172.217.162.14): icmp_seq=3 ttl=54 time=26.3 ms
+64 bytes from eze04s07-in-f14.1e100.net (172.217.162.14): icmp_seq=4 ttl=54 time=29.8 ms
+^C
+--- google.com ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3005ms
+rtt min/avg/max/mdev = 12.928/24.245/29.843/6.650 ms
+
+```
+
+> 🤔 Para pensar: ¿por qué Google tiene múltiples IPs? ¿Que ventaja representa para esta empresa y para quienes lo usamos?
+
+> 🏅 Desafío: ¿a través de qué IP accedés a google desde tu computadora?
 
 ## 8. Cabeceras
 
