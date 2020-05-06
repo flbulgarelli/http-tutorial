@@ -1106,7 +1106,7 @@ Connection: keep-alive
 </details>
 
 
-¡Esta redirige nos dirije a las `sucursales`!
+¡`/negocios` nos redirije a las `sucursales`!
 
 Probablemente el equipo en algún momento decidió que el nombre "negocios" no era el mejor, pero ya era tarde para renombrar la ruta. Entonces crearon una redirección _permamente_: aunque a partir de ahora **siempre deberemos apuntar nuestro cliente (por ejemplo nuestro navegador) a `/sucursales`**, se mantiene `/negocios`
 como un resto evolutivo y por _retrocompatibilidad_. Es decir, la ruta de `/negocios` sólo sigue existiendo para que si alguien sigue consultándola no tenga errores. Como es de esperar, esta ruta nos devuelve un `301`.
