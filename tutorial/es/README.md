@@ -64,11 +64,38 @@ $ curl 'https://macowins-server.herokuapp.com/prendas/20'
 
 ## 2. Códigos de respuesta
 
-¿Y si no hay nada?
+¿Cuántas prendas existirán? ¿Existirá la prenda 400?
+
+> 🏅 Desafío: ¡averigualo! Hacé `curl 'https://macowins-server.herokuapp.com/prendas/400'` y observá qué sucede.
+
+<details>
+  <summary>Respuesta</summary>
 
 ```bash
 $ curl 'https://macowins-server.herokuapp.com/prendas/400'
 ```
+</details>
+
+¡Momento! ¿Será un error? ¿Habrá forma de saberlo a ciencia cierta?
+
+```bash
+$ curl 'https://macowins-server.herokuapp.com/prendas/400' -i
+HTTP/1.1 404 Not Found
+X-Powered-By: Express
+Expires: -1
+Content-Type: text/html; charset=utf-8
+Content-Length: 0
+Vary: Accept-Encoding
+Date: Tue, 21 Apr 2020 12:43:18 GMT
+Connection: keep-alive
+```
+
+> ✍️ Autoevaluación: ¿Para qué sirve el flag `-i`? ¿Que nos permitió? Contratá tu respuesta con el lo que dice `curl --help`
+
+> 🏅 Desafío: contrastá con lo que sucede al hacer `curl 'https://macowins-server.herokuapp.com/prendas/1' -i`
+
+<details>
+  <summary>Respuesta</summary>
 
 ```bash
 $ curl 'https://macowins-server.herokuapp.com/prendas/1' -i
@@ -87,32 +114,23 @@ Connection: keep-alive
   "talle": 35
 }
 ```
+</details>
 
-> ✍️ Autoevaluación: ¿Para qué sirve el flag `-i`? ¿Que nos permitió? Contratá tu respuesta con el lo que dice `curl --help`
-
-
-```bash
-$ curl 'https://macowins-server.herokuapp.com/prendas/400' -i
-HTTP/1.1 404 Not Found
-X-Powered-By: Express
-Expires: -1
-Content-Type: text/html; charset=utf-8
-Content-Length: 0
-Vary: Accept-Encoding
-Date: Tue, 21 Apr 2020 12:43:18 GMT
-Connection: keep-alive
-```
-
-> 🤔 Para pensar: ¿Qué cambió? ¿Qué cambio o cambios te parecen relevates?
+> 🤔 Para pensar: ¿Qué cambió? ¿Qué cambio o cambios te parecen relevates entre ambas respuestas?
 
 > 💡 Tip: Probá hacer `curl 'https://macowins-server.herokuapp.com/prendas/400' -is | head -n1`
 
+> 🏅 Desafío: ¿y que sucederá si consultamos a una dirección que no existe, como por ejemplo `https://macowins-server.herokuapp.com/prindas/1`? ¡Averigualo!
+
+<details>
+  <summary>Respuesta</summary>
 
 ```bash
 $ curl 'https://macowins-server.herokuapp.com/prindas/1' -i
 HTTP/1.1 404 Not Found
 ....
 ```
+</details>
 
 `404` y `200` son códigos de estado (_status code_, también llamados a veces _códigos de respuesta_) y forman parte de toda respuesta HTTP.
 
@@ -507,7 +525,7 @@ Y se ven así: `protocolo://dominio:puerto/ruta#fragmento?parametro1=valor1&para
 que por sí mismo no significa nada. Por ejemplo `cerebro://recuerdos:3403/recientes#hoy?tema=http` es sólo un string que cumple la estructura de una URI, aunque probablemente
 no sea muy util (o al menos no el año 2020 🧠)
 
-> 🏅 Desafío: decí usando tus palabras qué significa la URI de este ejemplo _cerebtral_ 😛.
+> 🏅 Desafío: decí usando tus palabras qué significa la URI de este ejemplo _cerebral_ 😛.
 
 > 🤔 Para pensar: ¿cuál es el protocolo que estamos estudiando? ¿Se observa en las URLs que venimos mencionando?
 
@@ -934,7 +952,7 @@ Consultemos al muy conocido busacador `google.com`:
 
 
 ```bash
-$ curl http://google.com/ -i
+$ curl 'http://google.com/' -i
 HTTP/1.1 301 Moved Permanently
 Location: http://www.google.com/
 Content-Type: text/html; charset=UTF-8
@@ -958,12 +976,25 @@ The document has moved
 
 > 🏅 Desafío: mirá las cabeceras y averiguá a dónde tenemos que ir.
 
+<details>
+  <summary>Respuesta</summary>
+
+  La cabecera `Location` nos dice a dónde dirigirnos: `http://www.google.com/`
+</details>
+
 > 🏅 Desafío: ¿cuál es el nuevo código de estado utilizado?
 
-Efectivamente, `Location` nos dice a dónde (re)dirigirnos. No es de sorprender que ahora el siguiente pedido funcione como esperamos:
+<details>
+  <summary>Respuesta</summary>
+
+  Es `301`: `Moved Permanently`
+</details>
+
+
+`Location` nos dice a dónde (re)dirigirnos. No es de sorprender que ahora el siguiente pedido funcione como esperamos:
 
 ```bash
-$ curl http://www.google.com/ -i
+$ curl 'http://www.google.com/' -i
 HTTP/1.1 200 OK
 Date: Fri, 01 May 2020 21:43:52 GMT
 Expires: -1
@@ -985,7 +1016,7 @@ Transfer-Encoding: chunked
 Al igual que los navegadores, que automáticamente reconocen este código de estado `301` y nos redirigen automáticamente, `curl` cuenta con la opción `-L`
 
 ```bash
-curl http://google.com/ -iL
+curl 'http://google.com/' -iL
 HTTP/1.1 301 Moved Permanently
 Location: http://www.google.com/
 Content-Type: text/html; charset=UTF-8
@@ -1021,8 +1052,11 @@ Transfer-Encoding: chunked
 
 > 🏅 Desafío: ... ¡averigualo vos! Si produce redirecciones, ya sabés que hacer 😉
 
+<details>
+  <summary>Respuesta</summary>
+
 ```bash
-$ curl http://localhost:3000/negocios -iL
+$ curl 'https://macowins-server.herokuapp.com/negocios' -iL
 HTTP/1.1 301 Moved Permanently
 X-Powered-By: Express
 Location: /sucursales
@@ -1069,16 +1103,23 @@ Connection: keep-alive
   }
 ]
 ```
+</details>
 
-Como vemos esta ruta nos redirige a otra: las `sucursales`. Probablemente el equipo en algún momento decidió que el nombre "negocios" no era el mejor, pero ya era tarde para renombrar la ruta. Entonces crearon una redirección _permamente_: aunque a partir de ahora **siempre deberemos apuntar nuestro cliente (por ejemplo nuestro navegador) a `/sucursales`**, se mantiene `/negocios`
+
+¡Esta redirige nos dirije a las `sucursales`!
+
+Probablemente el equipo en algún momento decidió que el nombre "negocios" no era el mejor, pero ya era tarde para renombrar la ruta. Entonces crearon una redirección _permamente_: aunque a partir de ahora **siempre deberemos apuntar nuestro cliente (por ejemplo nuestro navegador) a `/sucursales`**, se mantiene `/negocios`
 como un resto evolutivo y por _retrocompatibilidad_. Es decir, la ruta de `/negocios` sólo sigue existiendo para que si alguien sigue consultándola no tenga errores. Como es de esperar, esta ruta nos devuelve un `301`.
 
 Por otro lado, QMP está estudiando agregar una ruta de `/catalogo`, que tenga un listado de todos los productos que están en stock, con sus precios, sucursal dónde conseguirlo, etc. Como construir esa funcionalidad les tomará tiempo, por ahora fueron por una decisión más conservadora.
 
 > 🏅 Desafío: Averiguá que sucede cuando consultás `/catalogo`. Nuevamente prestá atención a las redirecciones.
 
+<details>
+  <summary>Respuesta</summary>
+
 ```bash
-$ curl http://localhost:3000/catalogo -iL
+$ curl 'https://macowins-server.herokuapp.com/catalogo' -iL
 HTTP/1.1 302 Found
 X-Powered-By: Express
 Location: /prendas
@@ -1201,8 +1242,10 @@ Connection: keep-alive
   }
 ]
 ```
+</details>
 
-Acá aparece un nuevo código de estado:  `302`, que es similar al `301`, pero designa un redirección _temporal_. En otras palabras, el API de QMP nos está diciendo que _por ahora_ si querés consultar el `catalogo` mires las `prendas`. ¡Pero quizás en el futuro esto cambie, así **seguí consultando a `/catalogo`**!
+
+Cuando consultamos `/catalogo` nuevamente nos redirige, pero usando un código  `302` quue designa un redirección _temporal_. En otras palabras, el API de QMP nos está diciendo que _por ahora_ si querés consultar el `catalogo` mires las `prendas`. ¡Pero quizás en el futuro esto cambie, así **seguí consultando a `/catalogo`**!
 
 > 📝 Nota: la redirecciones "clásicas" 301 y 302 sólo funcionan (de forma consistente) con GET. Si nos interesa hacer redirects con otros métodos, existen otros códigos de estado: `307` y `308`.
 
@@ -1278,9 +1321,8 @@ Connection: keep-alive
 
 > 🏅 Desafío: ¿Qué sucede cuando coincide? Probá consultar con el valor `"31-OlDFK7SS8oUCKcn/LZE2poJFDDo"` (comillas incluidas)
 
-
-Como vemos cuando **SÍ coincide**, nos dice que el el recurso _sigue siendo el mismo_, mediante un código `304`:
-
+<details>
+  <summary>Respuesta</summary>
 
 ```bash
 curl 'https://macowins-server.herokuapp.com/prendas/20' -i -H 'If-None-Match: "31-OlDFK7SS8oUCKcn/LZE2poJFDDo"'
@@ -1291,6 +1333,11 @@ ETag: W/"31-OlDFK7SS8oUCKcn/LZE2poJFDDo"
 Date: Thu, 30 Apr 2020 01:40:04 GMT
 Connection: keep-alive
 ```
+
+</details>
+
+Cuando **coincide**, nos dice que el el recurso _sigue siendo el mismo_, mediante un código `304`.
+
 
 > 🤔 Para pensar: ¿Y para qué nos podría servir ésto? ¿Por qué creés que no responde un cuerpo en este caso?
 
@@ -1326,7 +1373,7 @@ Ahora vevmos que el `ETag` es diferente: `"45-38RNDuIjR/nqwDhm73CxIQFBqWc"`. Por
 Si ahora hacemos un _pedido condicional_ con el viejo `ETag`, la respusta cambiará:
 
 ```bash
-$ curl 'http://localhost:3000/prendas/20' -i -H 'If-None-Match: "31-OlDFK7SS8oUCKcn/LZE2poJFDDo"'
+$ curl 'https://macowins-server.herokuapp.com/prendas/20' -i -H 'If-None-Match: "31-OlDFK7SS8oUCKcn/LZE2poJFDDo"'
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Expires: -1
