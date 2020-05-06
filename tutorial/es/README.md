@@ -15,10 +15,10 @@
   * [13. Sobre la semántica de los verbos](#13-sobre-la-semantica-de-los-verbos)
   * [14. Recursos](#14-recursos)
   * [15. Paréntesis: servidores y despliegue](#15-parentesis-servidores-y-despliegue)
-  * [16. HTTP es stateless](#16-http-es-stateless)
-  * [17. Redirecciones](#17-redirecciones)
-  * [18. Negociación de contenido](#18-negociacion-de-contenido)
-  * [19. Seguridad](#19-seguridad)
+  * [16. Redirecciones](#16-redirecciones)
+  * [17. Seguridad](#17-seguridad)
+  * [18. HTTP es stateless](#18-http-es-stateless)
+  * [19. Negociación de contenido](#19-negociacion-de-contenido)
   * [20. Requests condicionales](#20-requests-condicionales)
   * [21. Contenido estático y dinámico](#21-contenido-estatico-y-dinamico)
 
@@ -936,17 +936,7 @@ To https://git.heroku.com/macowins-server.git
    07f9006..aa4b7bd  master -> master
 ```
 
-
-## 16. HTTP es stateless
-
-> 💬 Para discutir:
-> - Concepto de sesión
-> - Tipos de sesión:
->   - server side vs client side
->   - en memoria vs en cookie
-> - `Cookie` y `Set-Cookie`
-
-## 17. Redirecciones
+## 16. Redirecciones
 
 Consultemos al muy conocido busacador `google.com`:
 
@@ -1251,17 +1241,155 @@ Cuando consultamos `/catalogo` nuevamente nos redirige, pero usando un código  
 
 > ✍️ Autoevaluación: explicá con tus palabras la diferencia entre `301` y `302`.
 
-## 18. Negociación de contenido
+
+
+## 17. Seguridad
+
+Miremos más en detalle la ruta que acabamos de descubrir:
+
+
+```bash
+curl http://localhost:3000/sucursales/
+[
+  {
+    "id": 1,
+    "direccion": "Avenida Rivadavia 6200"
+  },
+  {
+    "id": 2,
+    "direccion": "Avenida Monroe 5100"
+  },
+  {
+    "id": 3,
+    "direccion": "Avenida Cabildo 2800"
+  },
+  {
+    "id": 4,
+    "direccion": "Avenida Santa Fe 2300"
+  },
+  {
+    "id": 5,
+    "direccion": "Avenida Nazca 1900"
+  },
+  {
+    "id": 6,
+    "direccion": "Avenida Corrientes 500"
+  }
+]
+```
+
+Y volvamos también a una pregunta que surgió anteriormente: ¿qué pasaría si intentamos crear una nueva sucursal, o modificar o eliminar una existente? ¿Cualquier debería poder hacerlo?
+
+> 🏅 Desafío: Intentá crear una nueva sucursal que quede cerca de tu casa 🏠. Recordá que tenés que usar el método `POST` y usar `application/json` como `Content-Type`. ¿Te deja hacerlo? ¿Qué código HTTP responde?
+
+<details>
+  <summary>Respuesta</summary>
+
+```bash
+curl -XPOST http://localhost:3000/sucursales/ -H 'Content-Type: application/json' --data '{ "direccion": "Calle Falsa 1234" }' -i
+HTTP/1.1 401 Unauthorized
+X-Powered-By: Express
+WWW-Authenticate: Basic
+Content-Type: text/html; charset=utf-8
+Content-Length: 0
+ETag: W/"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"
+Date: Wed, 06 May 2020 14:09:06 GMT
+Connection: keep-alive
+```
+</details>
+
+Se ve que el equipo de QMP aprendió de las lecciones pasadas y ahora no deja que cualquiera modifique sus recursos 😎.
+
+Cuando intentamos modificar las `sucursales` nos dice que el pedido no está autorizado (`401`), y nos propone que nos autentiquemos utilizando el método HTTP _basic_ (`WWW-Authenticate: Basic`), que no es más que el clásico (y no tan seguro 🕵️) _usuario y contraseña_. Para ingresarlo usemos la opción `--user`, con usuario `punpun` y contraseña.... ehmmm.... `punpun` 😛:
+
+```bash
+$ curl -XPOST http://localhost:3000/sucursales/ -H 'Content-Type: application/json' --data '{ "direccion": "Calle Falsa 1234" }' --user 'punpun' -i
+Enter host password for user 'punpun':
+HTTP/1.1 201 Created
+X-Powered-By: Express
+Expires: -1
+Access-Control-Expose-Headers: Location
+Location: http://localhost:3000/sucursales//7
+Content-Type: application/json; charset=utf-8
+Content-Length: 48
+ETag: W/"30-mf6CooPA8EhdV1CF/A0ifg/X95A"
+Vary: Accept-Encoding
+Date: Wed, 06 May 2020 14:14:18 GMT
+Connection: keep-alive
+
+{
+  "direccion": "Calle Falsa 1234",
+  "id": 7
+}
+```
+
+> 🏅 Desafío: ¿Qué sucede si ingresamos una contraseña inválida o un usuario inexistente? ¡Descubrilo!
+
+<details>
+  <summary>Respuesta</summary>
+
+```bash
+# ingresemos de contraseña asdfdsfdfs
+$ curl -XPOST http://localhost:3000/sucursales/ -H 'Content-Type: application/json' --data '{ "direccion": "Calle Falsa 1234" }' --user 'punpun' -i
+Enter host password for user 'punpun':
+HTTP/1.1 401 Unauthorized
+X-Powered-By: Express
+WWW-Authenticate: Basic
+Content-Type: text/html; charset=utf-8
+Content-Length: 0
+ETag: W/"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"
+Date: Wed, 06 May 2020 14:18:16 GMT
+Connection: keep-alive
+```
+</details>
+
+
+> 💬 Para discutir: `Basic` vs `Bearer`
+
+> 🏅 Desafío: Ahora intentá eliminar la priemera sucursal.
+
+<details>
+  <summary>Respuesta</summary>
+
+```bash
+$ curl -XDELETE http://localhost:3000/sucursales/1 --user 'punpun' -i
+Enter host password for user 'punpun':
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Expires: -1
+Content-Type: application/json; charset=utf-8
+Content-Length: 2
+ETag: W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"
+Vary: Accept-Encoding
+Date: Wed, 06 May 2020 14:21:47 GMT
+Connection: keep-alive
+
+{}
+```
+</details>
+
+> 🤔 Para pensar: ¿Fue necesario volver a ingresar las credenciales? ¿Por qué?
+
+
+## 18. HTTP es stateless
+
+Como acabamos de ver, HTTP es olvidadizo 🐠, ¡y no recuerda que yo nos autenticamos!
+
+> 💬 Para discutir:
+> - Concepto de sesión
+> - Tipos de sesión:
+>   - server side vs client side
+>   - en memoria vs en cookie
+> - `Cookie` y `Set-Cookie`
+
+
+## 19. Negociación de contenido
 
 > 💬 Para discutir:
 > - Accept
 > - Content Type
 
-## 19. Seguridad
 
-> 💬 Para discutir:
->   - `Authorization`
->   - `Basic` y `Bearer`
 
 ## 20. Requests condicionales
 
