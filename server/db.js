@@ -5,7 +5,8 @@ module.exports = () => {
 
   const data = {
     prendas: [],
-    ventas: []
+    ventas: [],
+    sucursales: []
   }
 
   let prendaId = 1;
@@ -21,7 +22,7 @@ module.exports = () => {
 
   data.prendas.push({ id: prendaId++, tipo: 'saco', talle: 'XS' })
   data.prendas.push({ id: prendaId++, tipo: 'saco', talle: 'S' })
-  data.prendas.push({ id: prendaId++, tipo: 'saco', talle: 'M' })
+  data.prendas.push({ id: prendaId++, tipo: 'saco', talle: 'M', enStock: false })
   data.prendas.push({ id: prendaId++, tipo: 'saco', talle: 'L' })
   data.prendas.push({ id: prendaId++, tipo: 'saco', talle: 'XL' })
 
@@ -29,5 +30,13 @@ module.exports = () => {
   for (let i = 1; i <= 500; i++) {
     data.ventas.push({ id: i, producto: sample(data.prendas), fecha: new Date(Math.trunc(now / 31536000000) * ((31536000000 / 500) * i)) })
   }
+
+  data.sucursales.push({ id: 1, direccion: 'Avenida Rivadavia 6200' });
+  data.sucursales.push({ id: 2, direccion: 'Avenida Monroe 5100' });
+  data.sucursales.push({ id: 3, direccion: 'Avenida Cabildo 2800' });
+  data.sucursales.push({ id: 4, direccion: 'Avenida Santa Fe 2300' });
+  data.sucursales.push({ id: 5, direccion: 'Avenida Nazca 1900' });
+  data.sucursales.push({ id: 6, direccion: 'Avenida Corrientes 500' });
+
   return data
 }

@@ -835,11 +835,13 @@ Formalización de REST: organizaremos nuestras rutas, tanto de una API como de *
 
 ## 15. Paréntesis: servidores y despliegue
 
-> 🤔 Para pensar: ¿Dónde está desplegado QMP? ¿En la máquina de uno de los docentes? ¿En su máquina?
+> 🤔 Para pensar: ¿Dónde está desplegado QMP? ¿En la máquina de uno de los docentes? ¿En su máquina? ¿Qué problemas tendría ésto?
 
 > 🏅 Desafío: ¿En dónde está desplegado QMP? ¿Podés averiguarlo las cabeceras HTTP y/o la URL?
 
 > 💬 Para discutir: qué es Heroku y cómo se despliega allí
+
+> 💬 Para discutir: ¿Qué significa _bare metal_? ¿Y qué es la _nube_? ¿Qué ventajas tiene desplegar en uno u otro?
 
 ```bash
 $ heroku login -i
@@ -1015,7 +1017,196 @@ Transfer-Encoding: chunked
 
 > ✍️ Autoevaluación: ¿por qué ahora en la salida de `curl` vemos dos grupos de cabeceras?
 
-> 💬 Para discutir: temporales vs permamentes
+¡Veamos otro ejemplo! En la primera iteración de QMP originalmente teníamos una ruta `/negocios` que nos respondía...
+
+> 🏅 Desafío: ... ¡averigualo vos! Si produce redirecciones, ya sabés que hacer 😉
+
+```bash
+$ curl http://localhost:3000/negocios -iL
+HTTP/1.1 301 Moved Permanently
+X-Powered-By: Express
+Location: /sucursales
+Vary: Accept
+Content-Type: text/plain; charset=utf-8
+Content-Length: 45
+Date: Wed, 06 May 2020 12:11:15 GMT
+Connection: keep-alive
+
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Expires: -1
+Content-Type: application/json; charset=utf-8
+Content-Length: 376
+ETag: W/"178-uvXmPkvp2cYryJGsbplIHwyzSPA"
+Vary: Accept-Encoding
+Date: Wed, 06 May 2020 12:11:15 GMT
+Connection: keep-alive
+
+[
+  {
+    "id": 1,
+    "direccion": "Avenida Rivadavia 6200"
+  },
+  {
+    "id": 2,
+    "direccion": "Avenida Monroe 5100"
+  },
+  {
+    "id": 3,
+    "direccion": "Avenida Cabildo 2800"
+  },
+  {
+    "id": 4,
+    "direccion": "Avenida Santa Fe 2300"
+  },
+  {
+    "id": 5,
+    "direccion": "Avenida Nazca 1900"
+  },
+  {
+    "id": 6,
+    "direccion": "Avenida Corrientes 500"
+  }
+]
+```
+
+Como vemos esta ruta nos redirige a otra: las `sucursales`. Probablemente el equipo en algún momento decidió que el nombre "negocios" no era el mejor, pero ya era tarde para renombrar la ruta. Entonces crearon una redirección _permamente_: aunque a partir de ahora **siempre deberemos apuntar nuestro cliente (por ejemplo nuestro navegador) a `/sucursales`**, se mantiene `/negocios`
+como un resto evolutivo y por _retrocompatibilidad_. Es decir, la ruta de `/negocios` sólo sigue existiendo para que si alguien sigue consultándola no tenga errores. Como es de esperar, esta ruta nos devuelve un `301`.
+
+Por otro lado, QMP está estudiando agregar una ruta de `/catalogo`, que tenga un listado de todos los productos que están en stock, con sus precios, sucursal dónde conseguirlo, etc. Como construir esa funcionalidad les tomará tiempo, por ahora fueron por una decisión más conservadora.
+
+> 🏅 Desafío: Averiguá que sucede cuando consultás `/catalogo`. Nuevamente prestá atención a las redirecciones.
+
+```bash
+$ curl http://localhost:3000/catalogo -iL
+HTTP/1.1 302 Found
+X-Powered-By: Express
+Location: /prendas
+Vary: Accept
+Content-Type: text/plain; charset=utf-8
+Content-Length: 30
+Date: Wed, 06 May 2020 12:20:19 GMT
+Connection: keep-alive
+
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Expires: -1
+Content-Type: application/json; charset=utf-8
+Content-Length: 1237
+ETag: W/"4d5-FRYAq3czqjuFkgsBzjVbUxGfr2k"
+Vary: Accept-Encoding
+Date: Wed, 06 May 2020 12:20:19 GMT
+Connection: keep-alive
+
+[
+  {
+    "id": 1,
+    "tipo": "pantalon",
+    "talle": 35
+  },
+  {
+    "id": 2,
+    "tipo": "pantalon",
+    "talle": 36
+  },
+  {
+    "id": 3,
+    "tipo": "pantalon",
+    "talle": 37
+  },
+  {
+    "id": 4,
+    "tipo": "pantalon",
+    "talle": 38
+  },
+  {
+    "id": 5,
+    "tipo": "pantalon",
+    "talle": 39
+  },
+  {
+    "id": 6,
+    "tipo": "pantalon",
+    "talle": 40
+  },
+  {
+    "id": 7,
+    "tipo": "pantalon",
+    "talle": 41
+  },
+  {
+    "id": 8,
+    "tipo": "pantalon",
+    "talle": 42
+  },
+  {
+    "id": 9,
+    "tipo": "pantalon",
+    "talle": 43
+  },
+  {
+    "id": 10,
+    "tipo": "pantalon",
+    "talle": 44
+  },
+  {
+    "id": 11,
+    "tipo": "remera",
+    "talle": "XS"
+  },
+  {
+    "id": 12,
+    "tipo": "remera",
+    "talle": "S"
+  },
+  {
+    "id": 13,
+    "tipo": "remera",
+    "talle": "M"
+  },
+  {
+    "id": 14,
+    "tipo": "remera",
+    "talle": "L"
+  },
+  {
+    "id": 15,
+    "tipo": "remera",
+    "talle": "XL"
+  },
+  {
+    "id": 16,
+    "tipo": "saco",
+    "talle": "XS"
+  },
+  {
+    "id": 17,
+    "tipo": "saco",
+    "talle": "S"
+  },
+  {
+    "id": 18,
+    "tipo": "saco",
+    "talle": "M"
+  },
+  {
+    "id": 19,
+    "tipo": "saco",
+    "talle": "L"
+  },
+  {
+    "id": 20,
+    "tipo": "saco",
+    "talle": "XL"
+  }
+]
+```
+
+Acá aparece un nuevo código de estado:  `302`, que es similar al `301`, pero designa un redirección _temporal_. En otras palabras, el API de QMP nos está diciendo que _por ahora_ si querés consultar el `catalogo` mires las `prendas`. ¡Pero quizás en el futuro esto cambie, así **seguí consultando a `/catalogo`**!
+
+> 📝 Nota: la redirecciones "clásicas" 301 y 302 sólo funcionan (de forma consistente) con GET. Si nos interesa hacer redirects con otros métodos, existen otros códigos de estado: `307` y `308`.
+
+> ✍️ Autoevaluación: explicá con tus palabras la diferencia entre `301` y `302`.
 
 ## 18. Negociación de contenido
 
