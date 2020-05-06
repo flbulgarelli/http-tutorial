@@ -1249,7 +1249,7 @@ Miremos más en detalle la ruta que acabamos de descubrir:
 
 
 ```bash
-curl http://localhost:3000/sucursales/
+curl https://macowins-server.herokuapp.com/sucursales/
 [
   {
     "id": 1,
@@ -1286,7 +1286,7 @@ Y volvamos también a una pregunta que surgió anteriormente: ¿qué pasaría si
   <summary>Respuesta</summary>
 
 ```bash
-curl -XPOST http://localhost:3000/sucursales/ -H 'Content-Type: application/json' --data '{ "direccion": "Calle Falsa 1234" }' -i
+curl -XPOST https://macowins-server.herokuapp.com/sucursales/ -H 'Content-Type: application/json' --data '{ "direccion": "Calle Falsa 1234" }' -i
 HTTP/1.1 401 Unauthorized
 X-Powered-By: Express
 WWW-Authenticate: Basic
@@ -1303,13 +1303,13 @@ Se ve que el equipo de QMP aprendió de las lecciones pasadas y ahora no deja qu
 Cuando intentamos modificar las `sucursales` nos dice que el pedido no está autorizado (`401`), y nos propone que nos autentiquemos utilizando el método HTTP _basic_ (`WWW-Authenticate: Basic`), que no es más que el clásico (y no tan seguro 🕵️) _usuario y contraseña_. Para ingresarlo usemos la opción `--user`, con usuario `punpun` y contraseña.... ehmmm.... `punpun` 😛:
 
 ```bash
-$ curl -XPOST http://localhost:3000/sucursales/ -H 'Content-Type: application/json' --data '{ "direccion": "Calle Falsa 1234" }' --user 'punpun' -i
+$ curl -XPOST https://macowins-server.herokuapp.com/sucursales/ -H 'Content-Type: application/json' --data '{ "direccion": "Calle Falsa 1234" }' --user 'punpun' -i
 Enter host password for user 'punpun':
 HTTP/1.1 201 Created
 X-Powered-By: Express
 Expires: -1
 Access-Control-Expose-Headers: Location
-Location: http://localhost:3000/sucursales//7
+Location: https://macowins-server.herokuapp.com/sucursales//7
 Content-Type: application/json; charset=utf-8
 Content-Length: 48
 ETag: W/"30-mf6CooPA8EhdV1CF/A0ifg/X95A"
@@ -1330,7 +1330,7 @@ Connection: keep-alive
 
 ```bash
 # ingresemos de contraseña asdfdsfdfs
-$ curl -XPOST http://localhost:3000/sucursales/ -H 'Content-Type: application/json' --data '{ "direccion": "Calle Falsa 1234" }' --user 'punpun' -i
+$ curl -XPOST https://macowins-server.herokuapp.com/sucursales/ -H 'Content-Type: application/json' --data '{ "direccion": "Calle Falsa 1234" }' --user 'punpun' -i
 Enter host password for user 'punpun':
 HTTP/1.1 401 Unauthorized
 X-Powered-By: Express
@@ -1352,7 +1352,7 @@ Connection: keep-alive
   <summary>Respuesta</summary>
 
 ```bash
-$ curl -XDELETE http://localhost:3000/sucursales/1 --user 'punpun' -i
+$ curl -XDELETE https://macowins-server.herokuapp.com/sucursales/1 --user 'punpun' -i
 Enter host password for user 'punpun':
 HTTP/1.1 200 OK
 X-Powered-By: Express
