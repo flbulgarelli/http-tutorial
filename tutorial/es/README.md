@@ -316,7 +316,7 @@ $ curl 'https://macowins-server.herokuapp.com/prendas?talle=40&tipo=pantalon'
 
 ## 4. Paginación
 
-Volvamos a `curl 'https://macowins-server.herokuapp.com/prendas'`. ¿Qué pasaría si este listado fuera muy grande? ## TODO simular que creamos muchos productos. O usar ventas
+Volvamos a `curl 'https://macowins-server.herokuapp.com/prendas'`. ¿Qué pasaría si este listado fuera muy grande? 
 
 > 🤔 Para pensar: ¿Qué problemas tiene esto?
 
