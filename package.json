@@ -19,6 +19,6 @@
   "homepage": "https://github.com/flbulgarelli/http-tutorial#readme",
   "dependencies": {
     "express-basic-auth": "^1.2.0",
-    "json-server": "^0.16.1"
+    "json-server": "^0.17.1"
   }
 }
