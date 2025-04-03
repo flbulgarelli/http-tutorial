@@ -1,0 +1,12 @@
+{
+  "name": "express-custom-server",
+  "version": "1.0.0",
+  "description": "A simple MacoWins server with mocked data",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
