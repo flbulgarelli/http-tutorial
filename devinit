@@ -4,7 +4,7 @@ echo 'Loading NVM...'
 . ~/.nvm/nvm.sh
 
 echo 'Setting node version...'
-nvm install 10
+nvm install
 
 echo 'Installing server...'
-npm install -g json-server
+npm install -g json-server@0.17.4
