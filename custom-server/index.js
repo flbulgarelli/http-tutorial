@@ -1,3 +1,4 @@
+// express es un framework (chiquito) para exponer APIs HTTP
 const express = require('express');
 const app = express();
 const PORT = 3000;
