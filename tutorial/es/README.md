@@ -827,15 +827,54 @@ Estas convenciones nos hablan de una semántica para cada uno de los verbos, y e
 
 ## 14. Recursos
 
-Formalización de REST: organizaremos nuestras rutas, tanto de una API como de **un sitio común y corriente**, en forma de recursos y _colecciones_.
+Formalización de REST: se trata de un conjunto de buenas prácticas sobre el uso de HTTP, que enfatizan, entre otras cosas:
 
-* `GET /ventas/`: consultar todos (listar)
-* `DELETE /ventas/`: borrar todos
-* `POST /ventas/`: crear uno
-* `POST /ventas/1` crear uno con ID (QMP no lo soporta)
-* `GET /ventas/1`: consultar uno
-* `PUT /ventas/1`: modificar uno
-* `DELETE /ventas/1`: eliminar uno
+ * el carácter orientado a recursos: cada ruta representa un ente que puede ser accedido y operado.
+    * esto contrasta con otra posible forma de modelar las rutas: RPC (_remote procedure call_ o llamada a procedimiento remoto), en la que cada ruta ruta representa una acción
+ * la distinción entre recursos individuales (aquellos para los que existe una única instancia) y colecciones (aquellos para los que existen múltiples)
+ * el aprovechamiento de la semántica de los verbos HTTP, las cabeceras y códigos de respuesta
+
+Como corolario de estas ideas, llegamos a convenciones de mapeo de recursos a rutas. Para las rutas plurales (es decir, colecciones), contamos con las siguientes:
+
+* `GET /ventas/`: consultar todos los elementos de una colección. Se espera que la respuesta sea un listado de elementos
+* `DELETE /ventas/`: borrar todos. Se espera que la respuesta sea el borrado de todos los elementos
+* `POST /ventas/`: crear uno.  Se espera que la respuesta sea la creación de un recurso dentro de la colección. El ID deberá ser calculado por el sistema y retornado en la respuesta (por ejemplo, en su cuerpo).
+* `POST /ventas/1` crear uno con ID. Similar a la ruta anterior, pero acá estaríamos dando a priori el ID que el sistema debería utilizar.
+* `GET /ventas/1`: consultar uno. Se espera que el sistema devuelva una representación del elemento
+* `PUT /ventas/1`: modificar uno de forma total. Se espera que la respuesta sea el reemplazo de la entidad original por la nueva entidad pasada en el cuerpo.
+* `PATCH /ventas/1`: modificar uno de forma parcial. Se espera que la respuesta sea el reemplazo de la entidad original por la nueva entidad, que es el resultado de reemplazar únicamente los datos originales de la misma con los pasados a través del cuerpo
+* `DELETE /ventas/1`: eliminar uno. Se espera que la respuesta sea la eliminación del elemento, si existe.
+
+Alternativamente, si estuviéramos ante una ruta individual (singular), se esperarían los siguientes comportamientos:
+
+* `GET /promocion-del-dia`: consultar el elemento. Se espera que la respuesta sea el único recurso
+* `DELETE /promocion-del-dia`: borrar el elemento. Se espera que la respuesta sea el borrado de dicho recurso.
+* `POST /promocion-del-dia`: crear el elemento.  Se espera que la respuesta sea la creación del recurso. Acá el ID del recurso (incluso si lo tuviera) no es particularmente relevante, dado que hay sólo uno por vez
+* `PUT /promocion-del-dia`: modificar el elemento de forma total.
+* `PATCH /promocion-del-dia`: modificar uno de forma parcial.
+
+Es importante destacar que esta forma de modelar trasciende el tipo de contenido que se manipula. En otras palabras, podríamos utilizar las convenciones de REST para organizar rutas de un sitio Web que devuelva HTML, de un API basada en JSON o otra basada en XML.
+
+También vale aclarar que un API REST no tiene por qué soportar todas estas rutas (por ejemplo, en muchos casos una ruta de _eliminar todos_ puede ser problemática), y que también será frecuente que todas o algunas de las operaciones requieran autenticación y ciertos niveles de autorización.
+
+En resumen:
+
+| Ruta                | Verbo   | Operación                                  | Cuerpo Pedido | Parámetros   | Cuerpo Respuesta    | Estados comunes     |
+|---------------------|---------|--------------------------------------------|---------------|--------------|---------------------|---------------------|
+| `/ventas/`          | GET     | Consultar todos los elementos              | No            | Opcional     | listado             | 200                 |
+| `/ventas/`          | DELETE  | Borrar todos                               | No            | Opcional     | -                   | 200                 |
+| `/ventas/`          | POST    | Crear uno (ID generado por el sistema)     | Sí            | No           | nuevo recuso        | 201, 400            |
+| `/ventas/1`         | POST    | Crear uno con ID dado                      | Sí            | No           | nuevo recuso        | 201, 400            |
+| `/ventas/1`         | GET     | Consultar uno                              | No            | No           | recurso             | 200, 404            |
+| `/ventas/1`         | PUT     | Modificar uno (total)                      | Sí            | No           | recurso actualizado | 200, 400, 404       |
+| `/ventas/1`         | PATCH   | Modificar uno (parcial)                    | Sí            | No           | recurso actualizado | 200, 400, 404       |
+| `/ventas/1`         | DELETE  | Eliminar uno                               | No            | No           | -                   | 200, 404            |
+| `/promocion-del-dia`| GET     | Consultar el recurso único                 | No            | No           | recurso             | 200, 404            |
+| `/promocion-del-dia`| DELETE  | Borrar el recurso único                    | No            | No           | -                   | 200, 404            |
+| `/promocion-del-dia`| POST    | Crear el recurso único                     | Sí            | No           | nuevo recurso       | 201, 400            |
+| `/promocion-del-dia`| PUT     | Modificar el recurso único (total)         | Sí            | No           | recurso actualizado | 200, 400, 404       |
+| `/promocion-del-dia`| PATCH   | Modificar el recurso único (parcial)       | Sí            | No           | recurso actualizado | 200, 400, 404       |
+
 
 > 🤔 Para pensar: nuevamente, ¿por qué es importante respetar estas convenciones?
 
@@ -845,7 +884,7 @@ Formalización de REST: organizaremos nuestras rutas, tanto de una API como de *
 >   * Youtube
 >   * Facebook
 >   * Infobae, Pagina12, La Nacion
->   * UNQ, UCEMA
+>   * UNQ, UTN
 >
 > 🏅 Desafío: si no se organizan de forma REST, ¿cómo se organizan sus rutas?
 
